@@ -1,0 +1,10 @@
+# dsh-hide-time bundle —— 隐藏侧栏相对时间戳。
+#
+# 注意：每个 insert 条目都必须写全 id / name / config 三个字段。
+# 缺 config 时，DSH 的插件加载器会把条目对象本身当成插件去注册，
+# 报 `invalid plugin, expect function or object with an "apply" method, received object`，
+# 并连带把整个 profile 配置重置（2026-10-31 两次事故即此）。
+- insert:
+    - id: dsh-hide-time
+      name: 'dsh-hide-time'
+      config: {}

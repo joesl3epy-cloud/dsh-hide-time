@@ -1,0 +1,54 @@
+{
+  "name": "dsh-hide-time",
+  "version": "0.2.1",
+  "type": "module",
+  "description": "隐藏 DSH 侧栏会话行右侧的相对时间戳（刚刚 / 7小时 / 1天）",
+  "license": "MIT",
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "dsh-plugin",
+    "sidebar",
+    "clean-ui"
+  ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json",
+    "./client": "./lib/client.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-slots"
+      ],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib/",
+    "test/",
+    "check.mjs",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/",
+    "check": "node check.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joesl3epy-cloud/dsh-hide-time.git"
+  },
+  "homepage": "https://github.com/joesl3epy-cloud/dsh-hide-time#readme",
+  "bugs": {
+    "url": "https://github.com/joesl3epy-cloud/dsh-hide-time/issues"
+  },
+  "author": "Jankin"
+}
