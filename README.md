@@ -2,7 +2,7 @@
 
 隐藏 DeepSeek Harness（DSH）侧栏会话行右侧的相对时间戳，让侧栏保留更简洁的信息展示。
 
-**作者：Jolyon · 当前公开版本：v1.0.0 · macOS 自用项目 · AI 辅助开发**
+**作者：Jolyon · 当前公开版本：1.0 · macOS 自用项目 · AI 辅助开发**
 
 [下载公开版本](https://github.com/joesl3epy-cloud/dsh-hide-time/releases/tag/v1.0.0) · [反馈问题](https://github.com/joesl3epy-cloud/dsh-hide-time/issues) · [配套工具：桌宠审批](https://github.com/joesl3epy-cloud/dsh-pet-approval)
 
@@ -126,7 +126,7 @@ node check.mjs        # 静态契约 + 加载器判定重放
 
 ## 版本记录
 
-见 [CHANGELOG](./CHANGELOG.md)。1.0.0确认已有单一功能范围，保留0.2.1历史版本。
+见 [CHANGELOG](./CHANGELOG.md)。1.0 确认已有单一功能范围，保留0.2.1历史版本。
 
 ## License
 
