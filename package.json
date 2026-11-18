@@ -1,6 +1,6 @@
 {
   "name": "dsh-hide-time",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "隐藏 DSH 侧栏会话行右侧的相对时间戳（刚刚 / 7小时 / 1天）",
   "license": "MIT",
@@ -33,7 +33,8 @@
     "check.mjs",
     "cordis.patch.yml",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",
@@ -50,5 +51,5 @@
   "bugs": {
     "url": "https://github.com/joesl3epy-cloud/dsh-hide-time/issues"
   },
-  "author": "Jankin"
+  "author": "Jolyon"
 }

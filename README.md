@@ -1,48 +1,79 @@
-# dsh-hide-time
+# dsh-hide-time · 给侧栏减少一项低优先级信息
 
-> 隐藏 DSH 侧栏里会话行右侧的相对时间戳（「刚刚」/「7小时」/「1天」）。
+隐藏 DeepSeek Harness（DSH）侧栏会话行右侧的相对时间戳，让侧栏保留更简洁的信息展示。
 
-只做一件事的小插件。装上前时间戳还在，装上后那一片空白。
+**作者：Jolyon · 当前公开版本：v1.0.0 · macOS 自用项目 · AI 辅助开发**
 
-> **非官方插件**。与 DeepSeek、DSH 的维护者没有隶属关系。DSH 是 DeepSeek 官方桌面应用，
-> 闭源分发；本插件**不包含**它的任何代码，只在前端按它的 DOM 结构做最小的显隐处理。
+[下载公开版本](https://github.com/joesl3epy-cloud/dsh-hide-time/releases/tag/v1.0.0) · [反馈问题](https://github.com/joesl3epy-cloud/dsh-hide-time/issues) · [配套工具：桌宠审批](https://github.com/joesl3epy-cloud/dsh-pet-approval)
 
-## 为什么
+## 开关方式
 
-侧栏每个会话右边都挂着「刚刚」「7小时」「1天」。对一天开几十个会话的人来说，这个信息
-既不准（不会自动刷新）、又占地方、还容易和标题抢注意力。
+安装后沿用DSH插件列表的启用／停用入口，不额外增加插件内开关。需要重启才能应用的宿主版本，按宿主提示操作。
 
-如果你也是「不看时间、只看标题」的人，这个插件就是给你准备的。
+## 为什么隐藏时间
 
-## 装法（本地路径，未发布到 npm）
+我希望把侧栏每一行有限的空间，留给更有用的内容。对我而言，标记一个会话「待回看」比看到它是「7 小时前」更有帮助；相对时间并不是我选择会话时最关心的信息，所以先把它隐藏。
+
+本插件只完成隐藏时间这一件事，**不提供待回看标志，也不新增其他标签**。为其他信息留出展示空间，是我的使用动机，不代表这些能力已经实现。
+
+## 使用前后
+
+| 状态 | 侧栏显示 |
+|---|---|
+| 启用前 | 会话标题旁保留 DSH 原有的相对时间 |
+| 启用后 | 满足识别条件的会话时间被隐藏，标题保留 |
+| 停用后 | 恢复原有显示 |
+
+它面向与我有类似信息偏好的使用者；需要按时间查找会话的人，可以保留 DSH 原有界面。
+
+## AI 协作过程
+
+我负责提出侧栏信息取舍的需求，与 ChatGPT / Codex 讨论方案，让 DeepSeek 完成主要实现，再根据实际使用和检查结果迭代。ChatGPT / Codex 也参与了后续代码审查、修复与验证。
+
+这是 AI 辅助的 Vibe Coding 项目，代码并非由我逐行独立编写。它展示的是一次范围明确的改进过程：选择一个真实问题，保持功能克制，并检查误隐藏、节点复用和停用恢复等边界。
+
+我已在 macOS 中持续自用一段时间，尚未对效率变化做量化测量。
+
+## 项目说明
+
+这是非官方 DSH 插件，与 DeepSeek 或 DSH 维护者没有隶属关系。插件通过前端脚本调整符合条件的侧栏节点显示，不修改 DSH 官方应用文件。DSH 的 DOM 结构与类名属于兼容依赖，并非保证不变的公开接口。
+
+## 安装（macOS，本地依赖）
+
+需要 Node ≥ 20、DSH。此插件不依赖 dsh-pet 或 Session Manager。仅在 macOS 环境使用验证，Windows/Linux 未验证。当前从 GitHub 获取源码，不使用 `npm install dsh-hide-time` 安装未发布的 npm 包。
+
+1. 下载上方公开版本并解压到稳定目录，或克隆仓库：
 
 ```bash
-# 1. profile 的 package.json 里加一条本地依赖（绝对路径）
-cd ~/.dsh/profiles/<profile>
-#      "dsh-hide-time": "file:/绝对路径/dsh-plugins/sidebar-hide-time"
-
-# 2. 用 DSH 自带的 pnpm 装
-node "/Applications/DeepSeek Harness.app/Contents/Resources/runtime/primary-runtime/dependencies/pnpm/bin/pnpm.mjs" install --dir .
-
-# 3. 在同一个 package.json 的 dsh.profile.bundles 里登记 "dsh-hide-time"
-# 4. 重启 DSH
+git clone https://github.com/joesl3epy-cloud/dsh-hide-time.git
 ```
 
-改完源码后如果 `node_modules` 里的副本没跟着变，这是 pnpm 对 `file:` 目录依赖的正常行为：
-把 `node_modules/dsh-hide-time` 挪走再 `pnpm install --force`。
+2. 打开实际使用的 `<DSH_HOME>/profiles/<profile>/package.json`，将以下依赖**合并进现有 dependencies**；路径改成插件的真实绝对路径：
 
-前端插件是**启动时一次性组装**的，改代码后刷新页面无效，必须重启 DSH。
+```json
+{
+  "dsh-hide-time": "file:/绝对路径/dsh-hide-time"
+}
+```
 
-## 怎么识别时间戳（三条同时成立才动手）
+3. 在同一个文件的 `dsh.profile.bundles` 数组中加入 `"dsh-hide-time"`。保留其他依赖、bundles 和配置，上面的片段不能整份覆盖 profile 文件。
+4. 在 profile 目录中使用 DSH 自带的 pnpm 安装：
 
-1. **在侧栏内** —— `aside` 或 `[class*="sidebar"]`。找不到侧栏就什么都不做，
-   **绝不回退到 `document.body` 全页扫描**。
-2. **class 里有一段以 `_time` 结尾** —— 如 `JoiKIa_time`。DSH 用 CSS Modules，类名带哈希
-   （`_item_u7vgf_24`），每次升级都变，但语义后缀稳定。`x_timeout` 这类不会被误认。
-3. **整个元素的文字符合时间格式** —— 且它自己不是别的 `_time` 节点的祖先。
+```bash
+node "/Applications/DeepSeek Harness.app/Contents/Resources/runtime/primary-runtime/dependencies/pnpm/bin/pnpm.mjs" install --dir "/实际DSH_HOME/profiles/实际profile"
+```
 
-只看文本是不够的：会话标题叫「昨天」、分组叫「3天前整理」都会中招。加上第 1、2 条之后，
-误伤的窗口被压到很小。**认不出就不隐藏**——这是刻意的取舍。
+应用安装位置不同时，按实际位置调整。首次安装前保留原 profile 配置；安装后重启 DSH，不能只刷新页面。
+
+首次验证时，检查会话时间被隐藏、名为「昨天」的标题仍保留。日常通过宿主插件列表启停。手工配置安装的环境也可从 bundles 移除并重启；彻底卸载再移除依赖并更新安装。不会删除会话内容。
+
+本地开发中若 file: 依赖的安装副本未更新，应核对安装文件与源码，再由测试环境重新安装验证，不能仅凭源码已修改就认定运行进程已更新。
+
+## 如何识别时间戳
+
+插件同时检查侧栏范围、会话行结构、以 `_time` 结尾的类名，以及完整匹配相对时间格式的文本。找不到侧栏或识别条件不足时跳过，不退回全页扫描。
+
+会话标题即使叫「昨天」，也不会仅因文字像时间就被隐藏。类名与会话行结构依赖当前 DSH 实现，上游改动后可能需要适配。
 
 被认出来的写法：
 
@@ -60,7 +91,7 @@ React 会复用 DOM 节点：一个被隐藏的时间 span 可能被拿去渲染
 停用插件（从 `bundles` 移除后重启）时，`stop()` 会断开 `MutationObserver`、清掉定时器、
 把所有被隐藏的节点恢复原状。插件不在时不应留下任何痕迹。
 
-## 性能
+## 更新与扫描范围
 
 - 只观察侧栏子树（`childList` / `subtree` / `characterData`），不观察整个页面
 - 侧栏还没出现时只观察 `documentElement` 等它出现，出现后立刻收窄
@@ -75,7 +106,7 @@ React 会复用 DOM 节点：一个被隐藏的时间 span 可能被拿去渲染
 ## 测试
 
 ```bash
-node --test test/     # 8 项行为测试
+npm test             # 8 项行为测试
 node check.mjs        # 静态契约 + 加载器判定重放
 ```
 
@@ -85,13 +116,17 @@ node check.mjs        # 静态契约 + 加载器判定重放
 涵盖：会话行内时间被隐藏、同名的标题不被隐藏、class 不含 `_time` 不动、不在会话行内不动、
 没有侧栏时不做全页扫描、节点复用后恢复原状、停用后全部恢复、factory 本身无副作用。
 
-## 实测环境
+## 已记录的使用与测试环境
 
 | 项 | 版本 |
 |---|---|
 | DSH | 0.2.1-rc.5（Electron 44.7.0，内嵌 Node 24.21.0） |
 | Node（跑测试用） | 24.21.0 / 26.11.1 |
 | 系统 | macOS（Apple Silicon） |
+
+## 版本记录
+
+见 [CHANGELOG](./CHANGELOG.md)。1.0.0确认已有单一功能范围，保留0.2.1历史版本。
 
 ## License
 
