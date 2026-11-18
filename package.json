@@ -2,7 +2,7 @@
   "name": "dsh-hide-time",
   "version": "1.0.0",
   "type": "module",
-  "description": "隐藏 DSH 侧栏会话行右侧的相对时间戳（刚刚 / 7小时 / 1天）",
+  "description": "Hide Time｜隐藏时间：隐藏 DSH 侧栏会话行右侧的相对时间戳（刚刚 / 7小时 / 1天）",
   "license": "MIT",
   "keywords": [
     "dsh",
@@ -34,7 +34,8 @@
     "cordis.patch.yml",
     "README.md",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "DEVELOPMENT.md"
   ],
   "scripts": {
     "test": "node --test test/*.test.mjs",
